@@ -73,6 +73,10 @@ body {
     left: 130%;
 }
 
+#btnProductor, #btnDistribuidor, #btnDescargarApp {
+    cursor: pointer;
+}
+
 .btn-green:hover {
     transform: translateY(-3px) scale(1.02);
     box-shadow: 0 10px 25px rgba(0, 200, 0, 0.35);
