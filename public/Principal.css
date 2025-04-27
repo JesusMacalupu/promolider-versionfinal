@@ -1340,16 +1340,16 @@ input::placeholder {
     }
 }
 
-/* NOTIFICACIONES DEL FORMULARIO - CENTRADAS Y RESPONSIVAS */
-.notification {
-    position: fixed;
+/* NOTIFICACIONES EN MODAL - CENTRADAS Y RESPONSIVAS */
+.modal-notification {
+    position: absolute; /* Cambiado de fixed a absolute para que sea relativo al modal */
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
     padding: clamp(12px, 3vw, 20px) clamp(16px, 4vw, 30px);
     border-radius: clamp(6px, 1.5vw, 8px);
     color: white;
-    z-index: 1000;
+    z-index: 1001; /* Mayor que el z-index del modal */
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.25);
     animation: slide-in 0.5s ease-out;
     width: auto;
@@ -1364,64 +1364,74 @@ input::placeholder {
     display: flex;
     align-items: center;
     justify-content: center;
-}
-
-.notification.success {
+  }
+  
+  .modal-notification.success {
     background-color: #00FF00;
-}
-
-.notification.error {
+  }
+  
+  .modal-notification.error {
     background-color: #f83535;
-}
-
-.fade-out {
+  }
+  
+  .modal-notification.fade-out {
     animation: fade-out 0.5s ease-out forwards;
-}
-
-@keyframes slide-in {
+  }
+  
+  /* Asegurar que el modal tenga contexto de posicionamiento */
+  .modal {
+    position: fixed;
+    overflow: visible; /* Permite que las notificaciones se muestren correctamente */
+  }
+  
+  @keyframes slide-in {
     from { 
-        opacity: 0;
-        transform: translate(-50%, -60%);
+      opacity: 0;
+      transform: translate(-50%, -60%);
     }
     to { 
-        opacity: 1;
-        transform: translate(-50%, -50%);
+      opacity: 1;
+      transform: translate(-50%, -50%);
     }
-}
-
-@keyframes fade-out {
+  }
+  
+  @keyframes fade-out {
     from { 
-        opacity: 1;
-        transform: translate(-50%, -50%);
+      opacity: 1;
+      transform: translate(-50%, -50%);
     }
     to { 
-        opacity: 0;
-        transform: translate(-50%, -40%);
+      opacity: 0;
+      transform: translate(-50%, -40%);
     }
-}
-
-/* Adaptaciones para móviles en orientación horizontal */
-@media (max-height: 500px) {
-    .notification {
-        top: 70%;
-        font-size: 14px;
-        padding: 10px 15px;
+  }
+  
+  /* Adaptaciones para móviles en orientación horizontal */
+  @media (max-height: 500px) {
+    .modal-notification {
+      top: 70%;
+      font-size: 14px;
+      padding: 10px 15px;
     }
-}
-
-/* Adaptaciones para tablets */
-@media (min-width: 768px) and (max-width: 1024px) {
-    .notification {
-        max-width: 70%;
-        font-size: 15px;
+  }
+  
+  /* Adaptaciones para tablets */
+  @media (min-width: 768px) and (max-width: 1024px) {
+    .modal-notification {
+      max-width: 70%;
+      font-size: 15px;
     }
-}
-
-/* Adaptaciones para pantallas muy grandes */
-@media (min-width: 1600px) {
-    .notification {
-        max-width: 50%;
-        font-size: 17px;
-        padding: 25px 35px;
+  }
+  
+  /* Adaptaciones para pantallas muy grandes */
+  @media (min-width: 1600px) {
+    .modal-notification {
+      max-width: 50%;
+      font-size: 17px;
+      padding: 25px 35px;
     }
-}
+  }
+  
+  .modal {
+    z-index: 1000;
+  }

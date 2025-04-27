@@ -38,10 +38,13 @@ app.post('/api/guardar-productor', async (req, res) => {
   if (!nombre || !correo || !celular) {
     return res.status(400).json({ error: 'Todos los campos son requeridos' });
   }
+  const emailRegex = /^[a-zA-Z0-9ñÑ._%+-]+@[a-zA-Z0-9ñÑ.-]+\.[a-zA-Z]{2,}$/;
+  if (!emailRegex.test(correo)) {
+    return res.status(400).json({ error: 'Formato de correo electrónico no válido' });
+  }
 
   try {
     const request = new sql.Request();
-    // Usando parámetros para prevenir SQL injection
     await request.input('nombre', sql.NVarChar, nombre)
                  .input('correo', sql.NVarChar, correo)
                  .input('celular', sql.NVarChar, celular)
@@ -63,7 +66,7 @@ app.post('/api/guardar-productor', async (req, res) => {
   }
 });
 
-// Endpoint para guardar distribuidores
+// Endpoint para guardar distribuidores (similar al anterior)
 app.post('/api/guardar-distribuidor', async (req, res) => {
   const { nombre, correo, celular } = req.body;
 
@@ -71,9 +74,13 @@ app.post('/api/guardar-distribuidor', async (req, res) => {
     return res.status(400).json({ error: 'Todos los campos son requeridos' });
   }
 
+  const emailRegex = /^[a-zA-Z0-9ñÑ._%+-]+@[a-zA-Z0-9ñÑ.-]+\.[a-zA-Z]{2,}$/;
+  if (!emailRegex.test(correo)) {
+    return res.status(400).json({ error: 'Formato de correo electrónico no válido' });
+  }
+
   try {
     const request = new sql.Request();
-    // Usando parámetros para prevenir SQL injection
     await request.input('nombre', sql.NVarChar, nombre)
                  .input('correo', sql.NVarChar, correo)
                  .input('celular', sql.NVarChar, celular)
@@ -101,5 +108,5 @@ app.get('/', (req, res) => {
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
-  console.log(`Servidor corriendo en http://localhost:${PORT}`);
+  console.log(`✅ Servidor corriendo en http://localhost:${PORT}`);
 });
