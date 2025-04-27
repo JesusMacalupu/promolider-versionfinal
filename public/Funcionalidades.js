@@ -4,21 +4,18 @@ function closeModal(modalId) {
   if (modal) modal.style.display = 'none';
 }
 
-// Mostrar notificación dentro del modal (solo la notificación desaparecerá)
+// Mostrar notificación dentro del modal
 function showModalNotification(modalId, message, isSuccess) {
   const modal = document.getElementById(modalId);
   if (!modal) return;
   
-  // Eliminar notificación existente
   const existing = modal.querySelector('.modal-notification');
   if (existing) existing.remove();
 
-  // Crear nueva notificación
   const notification = document.createElement('div');
   notification.className = `modal-notification notification ${isSuccess ? 'success' : 'error'}`;
   notification.textContent = message;
   
-  // Añadir al modal
   modal.appendChild(notification);
   setTimeout(() => {
     notification.classList.add('fade-out');
@@ -27,7 +24,7 @@ function showModalNotification(modalId, message, isSuccess) {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
-  // --- CONFIGURAR MODALS --- //
+  // Configurar modals
   const setups = [
     {
       btnSelector: '.btn-green:nth-child(1)',
@@ -63,17 +60,26 @@ document.addEventListener("DOMContentLoaded", () => {
     const correo = document.getElementById('correo-productor').value.trim();
     const celular = document.getElementById('celular-productor').value.trim();
 
+    // Validación de correo (permite ñ solo antes del @)
+    const emailRegex = /^[a-zA-Z0-9ñÑ._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    if (!emailRegex.test(correo)) {
+      showModalNotification('modalProductor', 'Formato de correo no válido. Ejemplo: usuarioñ@gmail.com', false);
+      return;
+    }
+
     try {
       const res = await fetch('/api/guardar-productor', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 
+          'Content-Type': 'application/json; charset=UTF-8'
+        },
         body: JSON.stringify({ nombre, correo, celular })
       });
       const data = await res.json();
 
       if (data.success) {
         showModalNotification('modalProductor', data.mensaje, true);
-        this.reset(); // Solo resetea el formulario
+        this.reset();
       } else {
         showModalNotification('modalProductor', data.error || 'Error al enviar la solicitud', false);
       }
@@ -90,17 +96,26 @@ document.addEventListener("DOMContentLoaded", () => {
     const correo = document.getElementById('correo-distribuidor').value.trim();
     const celular = document.getElementById('celular-distribuidor').value.trim();
 
+    // Validación de correo (permite ñ solo antes del @)
+    const emailRegex = /^[a-zA-Z0-9ñÑ._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    if (!emailRegex.test(correo)) {
+      showModalNotification('modalDistribuidor', 'Formato de correo no válido. Ejemplo: usuarioñ@gmail.com', false);
+      return;
+    }
+
     try {
       const res = await fetch('/api/guardar-distribuidor', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 
+          'Content-Type': 'application/json; charset=UTF-8'
+        },
         body: JSON.stringify({ nombre, correo, celular })
       });
       const data = await res.json();
 
       if (data.success) {
         showModalNotification('modalDistribuidor', data.mensaje, true);
-        this.reset(); // Solo resetea el formulario
+        this.reset();
       } else {
         showModalNotification('modalDistribuidor', data.error || 'Error al enviar la solicitud', false);
       }

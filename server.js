@@ -38,9 +38,14 @@ app.post('/api/guardar-productor', async (req, res) => {
   if (!nombre || !correo || !celular) {
     return res.status(400).json({ error: 'Todos los campos son requeridos' });
   }
-  const emailRegex = /^[a-zA-Z0-9ñÑ._%+-]+@[a-zA-Z0-9ñÑ.-]+\.[a-zA-Z]{2,}$/;
+
+  // Validación de correo (permite ñ solo antes del @)
+  const emailRegex = /^[a-zA-Z0-9ñÑ._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
   if (!emailRegex.test(correo)) {
-    return res.status(400).json({ error: 'Formato de correo electrónico no válido' });
+    return res.status(400).json({ 
+      error: 'Formato de correo no válido. Se permite "ñ" solo antes del @ (ejemplo: usuarioñ@gmail.com)',
+      success: false
+    });
   }
 
   try {
@@ -66,7 +71,7 @@ app.post('/api/guardar-productor', async (req, res) => {
   }
 });
 
-// Endpoint para guardar distribuidores (similar al anterior)
+// Endpoint para guardar distribuidores
 app.post('/api/guardar-distribuidor', async (req, res) => {
   const { nombre, correo, celular } = req.body;
 
@@ -74,9 +79,13 @@ app.post('/api/guardar-distribuidor', async (req, res) => {
     return res.status(400).json({ error: 'Todos los campos son requeridos' });
   }
 
-  const emailRegex = /^[a-zA-Z0-9ñÑ._%+-]+@[a-zA-Z0-9ñÑ.-]+\.[a-zA-Z]{2,}$/;
+  // Validación de correo (permite ñ solo antes del @)
+  const emailRegex = /^[a-zA-Z0-9ñÑ._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
   if (!emailRegex.test(correo)) {
-    return res.status(400).json({ error: 'Formato de correo electrónico no válido' });
+    return res.status(400).json({ 
+      error: 'Formato de correo no válido. Se permite "ñ" solo antes del @ (ejemplo: usuarioñ@gmail.com)',
+      success: false
+    });
   }
 
   try {
