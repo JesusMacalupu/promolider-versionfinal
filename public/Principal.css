@@ -1435,3 +1435,107 @@ input::placeholder {
   .modal {
     z-index: 1000;
   }
+
+/**** Icono de chat bot Promolider ****/
+
+#chatbot-container {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 70px;
+    height: 70px;
+    z-index: 1050;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* Anillos */
+  .chatbot-rings {
+    position: absolute;
+    width: 70px;
+    height: 70px;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .chatbot-ring {
+    position: absolute;
+    width: 70px;
+    height: 70px;
+    border: 1px solid #00FF00;
+    border-radius: 50%;
+    transform: scale(1);
+    opacity: 1;
+    animation: ripple 3s infinite ease-out;
+  }
+
+  .chatbot-ring:nth-child(2) {
+    animation-delay: 1.5s;
+  }
+
+  /* Animación */
+  @keyframes ripple {
+    0% {
+      transform: scale(1);
+      opacity: 0.7;
+    }
+    100% {
+      transform: scale(1.2);
+      opacity: 0;
+    }
+  }
+
+  /* Botón principal */
+  #chatbot-button {
+    position: relative;
+    z-index: 2;
+    width: 60px;
+    height: 60px;
+    background-color: #24292e;
+    border: 3px solid #00FF00;
+    color: #00FF00;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    overflow: hidden;
+  }
+
+  /* Icono */
+  #chatbot-icon {
+    font-size: 2rem;
+  }
+
+  /* Responsive */
+  @media (max-width: 576px) {
+    #chatbot-container {
+      width: 60px;
+      height: 60px;
+      bottom: 15px;
+      right: 15px;
+    }
+
+    .chatbot-rings {
+      width: 60px;
+      height: 60px;
+    }
+
+    .chatbot-ring {
+      width: 60px;
+      height: 60px;
+    }
+
+    #chatbot-button {
+      width: 50px;
+      height: 50px;
+    }
+
+    #chatbot-icon {
+      font-size: 1.6rem;
+    }
+}
