@@ -51,6 +51,13 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     closeIcon?.addEventListener('click', () => closeModal(modalId));
+
+    // Cerrar modal si se hace clic fuera del modal
+    modal?.addEventListener('click', (e) => {
+      if (e.target === modal) {
+        closeModal(modalId);
+      }
+    });
   });
 
   // --- SUBMIT FORM PRODUCTOR --- //
