@@ -150,9 +150,24 @@ function addTrackingEvent(selector, eventType, params) {
   }
 }
 
-// Eventos al hacer clic
+// Función para rastrear el scroll
+function trackScroll() {
+  const scrollThreshold = 300; // Desplazamiento mínimo en píxeles y medir
+  window.addEventListener('scroll', () => {
+    if (window.scrollY > scrollThreshold) {
+      trackFbEvent('Scroll', {
+        content_name: 'Scroll 300px',
+        status: 'scrolled'
+      });
+      window.removeEventListener('scroll', trackScroll); // Evita múltiples eventos
+    }
+  });
+}
+
+// Eventos al cargar el documento
 document.addEventListener('DOMContentLoaded', function () {
-  
+  trackScroll(); // Inicializa el seguimiento del scroll
+
   // Botones principales
   addTrackingEvent('#btnProductor', 'click', ['Lead', { content_name: 'Productor Click', content_category: 'Lead' }]);
   addTrackingEvent('#btnDistribuidor', 'click', ['Lead', { content_name: 'Distribuidor Click', content_category: 'Lead' }]);
