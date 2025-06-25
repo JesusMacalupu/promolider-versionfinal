@@ -8,14 +8,14 @@ function closeModal(modalId) {
 function showModalNotification(modalId, message, isSuccess) {
   const modal = document.getElementById(modalId);
   if (!modal) return;
-  
+
   const existing = modal.querySelector('.modal-notification');
   if (existing) existing.remove();
 
   const notification = document.createElement('div');
   notification.className = `modal-notification notification ${isSuccess ? 'success' : 'error'}`;
   notification.textContent = message;
-  
+
   modal.appendChild(notification);
   setTimeout(() => {
     notification.classList.add('fade-out');
@@ -61,7 +61,7 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   // --- SUBMIT FORM PRODUCTOR --- //
-  document.getElementById('formProductor')?.addEventListener('submit', async function(e) {
+  document.getElementById('formProductor')?.addEventListener('submit', async function (e) {
     e.preventDefault();
     const nombre = document.getElementById('nombre-productor').value.trim();
     const correo = document.getElementById('correo-productor').value.trim();
@@ -77,7 +77,7 @@ document.addEventListener("DOMContentLoaded", () => {
     try {
       const res = await fetch('/api/guardar-productor', {
         method: 'POST',
-        headers: { 
+        headers: {
           'Content-Type': 'application/json; charset=UTF-8'
         },
         body: JSON.stringify({ nombre, correo, celular })
@@ -97,7 +97,7 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   // --- SUBMIT FORM DISTRIBUIDOR --- //
-  document.querySelector('.formulario-distribuidor')?.addEventListener('submit', async function(e) {
+  document.querySelector('.formulario-distribuidor')?.addEventListener('submit', async function (e) {
     e.preventDefault();
     const nombre = document.getElementById('nombre-distribuidor').value.trim();
     const correo = document.getElementById('correo-distribuidor').value.trim();
@@ -113,7 +113,7 @@ document.addEventListener("DOMContentLoaded", () => {
     try {
       const res = await fetch('/api/guardar-distribuidor', {
         method: 'POST',
-        headers: { 
+        headers: {
           'Content-Type': 'application/json; charset=UTF-8'
         },
         body: JSON.stringify({ nombre, correo, celular })
@@ -129,6 +129,71 @@ document.addEventListener("DOMContentLoaded", () => {
     } catch (err) {
       console.error(err);
       showModalNotification('modalDistribuidor', 'Error de conexión con el servidor', false);
+    }
+  });
+});
+
+/**** Para el pixel de Meta *****/
+
+// Función para rastrear eventos
+function trackFbEvent(event, params = {}) {
+  if (typeof fbq !== 'undefined') {
+    fbq('track', event, params);
+  }
+}
+
+// Función para agregar eventos de seguimiento a un elemento
+function addTrackingEvent(selector, eventType, params) {
+  const element = document.querySelector(selector);
+  if (element) {
+    element.addEventListener(eventType, () => trackFbEvent(...params));
+  }
+}
+
+// Eventos al hacer clic
+document.addEventListener('DOMContentLoaded', function () {
+  
+  // Botones principales
+  addTrackingEvent('#btnProductor', 'click', ['Lead', { content_name: 'Productor Click', content_category: 'Lead' }]);
+  addTrackingEvent('#btnDistribuidor', 'click', ['Lead', { content_name: 'Distribuidor Click', content_category: 'Lead' }]);
+  addTrackingEvent('#btnDescargarApp', 'click', ['Download', { content_name: 'App Download Click', content_category: 'Conversion' }]);
+
+  // Chatbot
+  addTrackingEvent('#chatbot-button', 'click', ['Contact', {
+    content_name: 'WhatsApp Chat',
+    content_category: 'Contact',
+    messaging_platform: 'WhatsApp'
+  }]);
+
+  // Formularios
+  addTrackingEvent('#formProductor', 'submit', ['CompleteRegistration', {
+    content_name: 'Productor Form Submit',
+    status: 'completed'
+  }]);
+
+  addTrackingEvent('.formulario-distribuidor', 'submit', ['CompleteRegistration', {
+    content_name: 'Distribuidor Form Submit',
+    status: 'completed'
+  }]);
+
+  // Redes sociales del footer
+  const socialLinks = {
+    'facebook': 'Facebook Click',
+    'instagram': 'Instagram Click',
+    'linkedin': 'LinkedIn Click',
+    'youtube': 'YouTube Click',
+    'tiktok': 'TikTok Click'
+  };
+
+  document.querySelectorAll('.social-icon').forEach(link => {
+    const platform = Object.keys(socialLinks).find(p => link.href.includes(p));
+    if (platform) {
+      link.addEventListener('click', () => {
+        trackFbEvent('SocialClick', {
+          content_name: socialLinks[platform],
+          social_platform: platform
+        });
+      });
     }
   });
 });
